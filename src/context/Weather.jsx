@@ -10,11 +10,20 @@ export const WeatherProvider = (props) => {
   const [data,setData]=useState(null);
   const [searchCity , setSearchCity] =useState(null);
    
-  const fetchData= async()=>{
-     const response=await getWeatherDataForCity(searchCity)
-     setData(response);
-     
+ const fetchData = async () => {
+  try {
+    const response = await getWeatherDataForCity(searchCity);
+    if (response && !response.error) {
+      setData(response);
+    } else {
+      alert("City not found. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    alert("Something went wrong. Please try again.");
   }
+};
+
 
   return (
     <WeatherContext.Provider value={{searchCity,data,setSearchCity ,fetchData}}>
